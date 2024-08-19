@@ -1,0 +1,29 @@
+select p.brand_id from Bikes.production.brands p
+
+select GETDATE() as [Current Date]
+select convert(nvarchar(20),GETDATE(),110) as todaydate
+select convert(nvarchar(20),GETDATE(),100) as todaydate
+select cast(20 as nvarchar(5)) + 'a' + N'استرینگ'
+
+
+declare @arbitrary_date nvarchar(50) = '1996-07-30';
+--SET @arbitrary_date = '1994-09-21';
+
+SELECT DateDIFF(month,@arbitrary_date, GETDATE()) as KamyarMonthAge;
+SELECT DateDIFF(day,@arbitrary_date, GETDATE()) as KamyarDayAge;
+SELECT DateDIFF(day,@arbitrary_date, GETDATE())/365.25 as KamyarExactAge;
+
+SET @arbitrary_date = '1994-09-21';
+SELECT DateDIFF(year,@arbitrary_date, GETDATE()) as MahyarAge;
+SELECT DateDIFF(day,@arbitrary_date, GETDATE())/365.25 as MahyarExactAge;
+
+declare @samplestring nvarchar(100) = 'Hi, I am Kamyar, please check string Expressions';
+select left(@samplestring, 10) as leftexample
+select RIGHT(@samplestring, 10) as rightexample
+select SUBSTRING(@samplestring, 10, len(@samplestring) - 20) as substringexample
+
+
+-- using length function
+-- drop function dbo.stringlength
+select dbo.stringlength('dsfsdfsdfdsf')
+select dbo.stringlength(@samplestring)
