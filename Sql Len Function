@@ -1,0 +1,9 @@
+CREATE FUNCTION stringlength(@strinput nvarchar(4000))
+RETURNS float
+AS
+BEGIN
+	Declare @length float = len(@strinput)
+	return @length
+
+END
+GO
