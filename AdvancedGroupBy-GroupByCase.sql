@@ -39,7 +39,7 @@ order by Case PriceStatus
 		end
 
 
--- Example 4
+-- Example 3
 select * from Employees
 
 select Case
@@ -56,7 +56,7 @@ Group by Case
 		else N'Unknown'
 		end
 
--- Example 3
+-- Example 4
 Declare @MinOrderDate datetime
 set @MinOrderDate = (select Min(BirthDate) from Employees)
 select @MinOrderDate 
