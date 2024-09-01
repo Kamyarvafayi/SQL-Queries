@@ -64,3 +64,24 @@ select cast(var(convert(float,Extension)) as decimal(10,2)) from [dbo].[Employee
 
 select cast(stdev(convert(float,Extension)) as decimal(10,2)) from [dbo].[Employees]
 
+-- two important examples
+
+select * from [dbo].[Employees] where convert(float,Extension) > (select stdev(convert(float,Extension)) from [dbo].[Employees])
+
+select * from [dbo].[Employees] where convert(float,Extension) > (select avg(convert(float,Extension)) from [dbo].[Employees])
+
+-- Agg functions + Distinct
+use Northwind
+
+select Count(Distinct year(OrderDate)) from Orders
+
+select Count(Distinct Country) from Customers
+
+select 1.0*count(CustomerID)/ count(Distinct (CustomerID)) from Orders
+where year(OrderDate) = 1997
+
+select CustomerID, count(CustomerID) from Orders
+where year(OrderDate) = 1997
+group by CustomerID
+
+select * from Orders
