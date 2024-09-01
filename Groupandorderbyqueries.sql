@@ -85,24 +85,24 @@ order by O.EmployeeID, E.LastName, E.FirstName
 -- Example 1 (Important)
 select * from Customers;
 with tempTable as (select CustomerID, CompanyName, ContactName, Country, City, Case Country
-																					when  N'USA' Then 1
-																					when N'Germany' Then 2
-																					when N'UK' Then 3
-																					when N'France' then 4
-																					else 5 
-																					end as CountryPriority
+															when  N'USA' Then 1
+															when N'Germany' Then 2
+															when N'UK' Then 3
+															when N'France' then 4
+															else 5 
+															end as CountryPriority
 						from Customers)
 select * from tempTable 
 order by CountryPriority ASC, Country ASC;
 
 -- Example 1-1
 with tempTable as (select CustomerID, CompanyName, ContactName, Country, City, Case Country
-																					when  N'USA' Then 1
-																					when N'Germany' Then 2
-																					when N'UK' Then 3
-																					when N'France' then 4
-																					else 5 
-																					end as CountryPriority
+															when  N'USA' Then 1
+															when N'Germany' Then 2
+															when N'UK' Then 3
+															when N'France' then 4
+															else 5 
+															end as CountryPriority
 						from Customers)
 select * from tempTable 
 order by 6 ASC, 4 ASC
