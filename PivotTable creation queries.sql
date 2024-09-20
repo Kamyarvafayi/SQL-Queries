@@ -35,3 +35,49 @@ select E.EmployeeID, E.FirstName, E.LastName,
 		(select sum([TotalSale]) from Temp where Temp.EmployeeID = E.EmployeeID and orderyear in (1996, 1997, 1998)) as [TotalSale]
 
 from Employees E
+
+
+
+-- Method 3 (PIVOT)
+-- first create cte, in this cte we add columns which are required before aggregated columns
+-- Example 1
+
+with T as
+ (Select E.EmployeeID, E.LastName, Year(O.OrderDate) as Sal, O.OrderID
+			from Employees E inner join Orders O on E.EmployeeID = O.EmployeeID)
+
+select * , [1996] + [1997] + [1998] as Total
+ from T 
+ pivot (count(OrderID) for sal in ([1996], [1997], [1998])) as SalesAmount
+ order by EmployeeID
+			
+
+--Example 2
+
+with T as
+ (Select E.EmployeeID, E.LastName, Year(O.OrderDate) as Sal, sum(OD.Quantity*OD.UnitPrice) as SalesAmount
+			from Employees E inner join Orders O on E.EmployeeID = O.EmployeeID
+								inner join [Order Details] OD on OD.OrderID = O.OrderID
+			group by E.EmployeeID, E.LastName, Year(O.OrderDate))
+
+select * , [1996] + [1997] + [1998] as Total
+ from T 
+ pivot (sum(SalesAmount) for sal in ([1996], [1997], [1998])) as SalesAmount
+ order by EmployeeID;
+
+
+ -- Example 3 
+ -- a report with these Columns Employee Id LastName USA UK Germany France Total and fill the table with the dollar sale value for each Employee
+
+ with T as
+  (Select E.EmployeeID, E.LastName, C.Country, OD.Quantity*OD.UnitPrice as SalesAmount
+			from Employees E inner join Orders O on E.EmployeeID = O.EmployeeID
+								inner join [Order Details] OD on OD.OrderID = O.OrderID
+								inner join Customers C on C.CustomerID = O.CustomerID
+								where C.Country in ('USA', 'UK', 'France', 'Germany')
+								--Group by E.EmployeeID, E.LastName, C.Country
+								)
+
+select *, [USA] + [UK] + [France] + [Germany] as Total
+from T
+ pivot(sum(SalesAmount) for Country in ([USA], [UK], [France], [Germany])) as MyPivot
