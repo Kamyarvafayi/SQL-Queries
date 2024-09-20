@@ -340,3 +340,27 @@ FROM Categories C INNER JOIN Products P
 ON C.categoryID = P.CategoryID
 WHERE P.UnitPrice = (SELECT MAX(UnitPrice) from Products where Products.CategoryID = C.CategoryID)
 GROUP BY C.CategoryID, C.CategoryName, P.ProductID, P.ProductName , P.UnitPrice
+
+
+-- Behtarin Kalayi ke be har keshvar forokhte sode
+select * from Products
+select * from [Order Details]
+select * from Suppliers;
+with T as
+	(select P.ProductID, P.ProductName, S.Country, sum(OD.Quantity) as TotalPurchase 
+			from Products P inner join [Order Details] OD on P.ProductID = OD.ProductID
+							inner join Suppliers S on S.SupplierID = P.SupplierID
+			group by P.ProductID, P.ProductName, S.Country)
+
+select * from T 
+	where T.TotalPurchase = (select max(TotalPurchase) from T as T2 where T2.Country = T.Country)
+	order by T.Country
+
+
+-- Exercise : report 
+select * from Products
+
+select P.ProductID, P.ProductName, P.UnitPrice
+							, isnull((select P2.UnitPrice from Products P2 where P2.ProductID = P.ProductID - 1), 0) as PreviousPrice, 
+							isnull((select P2.UnitPrice from Products P2 where P2.ProductID = P.ProductID + 1), 0) as NextPrice
+from Products P
