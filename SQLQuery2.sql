@@ -1,29 +1,47 @@
-﻿select p.brand_id from Bikes.production.brands p
+select top 100 * from ETL.PBI.pbi.ReceiptDetails 
+where PartNo = '1101550'
+and DocDate <> '4352005010'
+and cast(DocDate as nvarchar(20)) >= N'14040601'
 
-select GETDATE() as [Current Date]
-select convert(nvarchar(20),GETDATE(),110) as todaydate
-select convert(nvarchar(20),GETDATE(),100) as todaydate
-select cast(20 as nvarchar(5)) + 'a' + N'استرینگ'
+select count(*) from ETL.PBI.pbi.ReceiptDetails 
 
-
-declare @arbitrary_date nvarchar(50) = '1996-07-30';
---SET @arbitrary_date = '1994-09-21';
-
-SELECT DateDIFF(month,@arbitrary_date, GETDATE()) as KamyarMonthAge;
-SELECT DateDIFF(day,@arbitrary_date, GETDATE()) as KamyarDayAge;
-SELECT DateDIFF(day,@arbitrary_date, GETDATE())/365.25 as KamyarExactAge;
-
-SET @arbitrary_date = '1994-09-21';
-SELECT DateDIFF(year,@arbitrary_date, GETDATE()) as MahyarAge;
-SELECT DateDIFF(day,@arbitrary_date, GETDATE())/365.25 as MahyarExactAge;
-
-declare @samplestring nvarchar(100) = 'Hi, I am Kamyar, please check string Expressions';
-select left(@samplestring, 10) as leftexample
-select RIGHT(@samplestring, 10) as rightexample
-select SUBSTRING(@samplestring, 10, len(@samplestring) - 20) as substringexample
+select max(QCApprovalDate) from ETL.PBI.pbi.ReceiptDetails 
+where PartNo = '1101550'
+and DocDate <> '4352005010'
+and cast(DocDate as nvarchar(20)) >= N'14040601'
 
 
--- using length function
--- drop function dbo.stringlength
-select dbo.stringlength('dsfsdfsdfdsf')
-select dbo.stringlength(@samplestring)
+Select RequestNo, ProductCode as [SKU Code], ProductNameEn,
+                                   CAST(ReciveQtyDate AS Date) as [Receive Date],
+                                   NewValue as QTY, ReportDate
+                                   from etl.ABDDashboardDW.fact.OpenOrderHistory
+                                   where ReportDate = '2025-10-08'
+                                   and CAST(ReciveQtyDate AS Date) between N'2025-09-01' and '2026-12-30'
+								   and ProductCode in (1110058, 2228575)
+                                   and VersionId = 55
+                                   order by [Receive Date] ASC
+
+select * from etl.amardb.qv.MPS
+                             where RevId = (select max(revid) from etl.amardb.qv.MPS where TargetType = 'Forecast')
+                             and Month = (select min(Month) from etl.amardb.qv.MPS
+                                          where RevId = (select max(revid) from etl.amardb.qv.MPS where TargetType = 'Forecast'))
+
+select max(ActualStartTime) from etl.amardb.qv.performancereport
+
+
+Select RequestNo, ProductCode as [SKU Code], ProductNameEn,
+                                   CAST(ReciveQtyDate AS Date) as [Receive Date],
+                                   NewValue as QTY, ReportDate
+                                   from etl.ABDDashboardDW.fact.OpenOrderHistory
+                                   where ReportDate = (select max(ReportDate) from etl.ABDDashboardDW.fact.OpenOrderHistory)
+                                   and CAST(ReciveQtyDate AS Date) between '2025-10-08' and '2025-11-21'
+                                   and VersionId = 1
+								   and ProductCode = '1165640'
+                                   order by [Receive Date] DESC
+
+
+
+etl.pbi.pbi.[RayvarzReportHistorical_26]
+
+
+

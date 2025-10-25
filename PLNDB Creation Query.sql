@@ -1,0 +1,35 @@
+create Table Material.MDC_BP_Result (Id int Primary key Identity (0,1),
+									 [Material Code] nvarchar(20),
+									 [Material Name] nvarchar(300),
+									 [ALt_material_Code] nvarchar(20),
+									 [Material Type] nvarchar(50),
+									 [Material Unit] nvarchar(20),
+									 [BOM Type] nvarchar(20),
+									 [Jalali Date] nvarchar(10),
+									 [Miladi Date] nvarchar(10),
+									 [MachineCode] nvarchar(10),
+									 [MachineName] nvarchar(100),
+									 [ProcessId] int,
+									 [MrayId] nvarchar(20),
+									 [RayvarzId] nvarchar(20),
+									 [ProductName] nvarchar(300),
+									 [BatchNum] nvarchar(50),
+									 [BatchBox] float,
+									 [Product Description] nvarchar(300),
+									 [BOM VERSION] nvarchar(10),
+									 [Consumption Factor (+Wastage)] float,
+									 [PM_Status] int, 
+									 [Coat_Status] int,
+									 [RM_Status] int,
+									 [Standard Batch Box] float,
+									 [MachineDscEn] nvarchar(500),
+									 [MachineAbr] nvarchar(500),
+									 [OP_Order] int,
+									 [Critical Level] int,
+									 [Color] nvarchar(50),
+									 InsertDateTime DateTime)
+
+select * from Material.MDC_BP_Result
+order by InsertDateTime
+
+--truncate Table Material.MDC_BP_Result
